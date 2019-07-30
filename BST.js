@@ -70,7 +70,7 @@ class BinarySearchTree {
     // If the tree already exists, then start traversing from the root
     // and compare it to the key we're inserting.
     // If the new key is less than the node's key, we'll traverse left
-    else if (key < this.key) {
+    else if (key <= this.key) {
       // What do we do if it's equal? In the previous exercises I defaulted by traversing left
 
       // if the existing node doesn't have a left child, this will be the left child
@@ -92,6 +92,7 @@ class BinarySearchTree {
         this.right.insert(key, value)
       }
     }
-
   }
+
+
 }
