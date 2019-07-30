@@ -94,5 +94,142 @@ class BinarySearchTree {
     }
   }
 
+  find(key) {
+    if (this.key == key) {
+      return this.value
+    }
+    else if (key < this.key && this.left) {
+      return this.left.find(key)
+    }
+    else if (key > this.key && this.right) {
+      return this.right.find(key)
+    }
+    else {
+      throw new Error('Key Error')
+    }
+  }
+  remove(key){
+    if (this.key == key) {
+      if (this.left && this.right) {
+        const successor = this.right._findMin()
+        this.key = successor.key
+        this.value = successor.value
+        successor.remove(successor.key)
+      }
+      else if (this.left) {
+        this._replaceWith(this.left)
+      }
+      else if (this.right) {
+        this._replaceWith(this.right)
+      }
+      else {
+        this._replaceWith(null)
+      }
+    }
+    else if (key < this.key && this.left) {
+      this.left.remove(key)
+    }
+    else if (key > this.key && this.right) {
+      this.right.remove(key)
+    }
+    else {
+      throw new Error('Key Error')
+    }
+  }
+  _replaceWith(node){
+    if (this.parent) {
+      if (this == this.parent.left) {
+        this.parent.left = node
+      }
+      else if (this == this.parent.right) {
+        this.parent.right = node
+      }
+      if (node) {
+        node.parent = this.parent
+      }
+    }
+    else {
+      if (node) {
+        this.key = node.key
+        this.value = node.value
+        this.left = node.left
+        this.right = node.right
+      }
+      else {
+        this.key = null
+        this.value = null
+        this.left = null
+        this.right = null
+      }
+    }
+  }
+  
+  _findMin(){
+    if (!this.left) {
+      return this
+    }
+    return this.left._findMin()
+  }
+}
+
+function height(bst){
+  if(!bst){
+    return 0
+  }
+  else if(bst.left && bst.right){
+    const left = height(bst.left)
+    const right = height(bst.right)
+    if(left > right){
+      return 1 + left
+    }
+    else{
+      return 1 + right
+    }
+  }
+  else if(bst.left){
+    return 1 + height(bst.left)
+  }
+  else if(bst.right){
+    return 1 + height(bst.right)
+  }
+  
+  return 1 
 
 }
+
+function main() {
+  BST = new BinarySearchTree()
+
+  // BST.insert(3, 3)
+  // BST.insert(1, 1)
+  // BST.insert(4, 4)
+  // BST.insert(6, 6)
+  // BST.insert(9, 9)
+  // BST.insert(2, 2)
+  // BST.insert(5, 5)
+  // BST.insert(7, 7)
+
+  BST.insert('E', 'E')
+  BST.insert('A', 'A')
+  BST.insert('S', 'S')
+  BST.insert('Y', 'Y')
+  BST.insert('Q', 'Q')
+  BST.insert('U', 'U')
+  BST.insert('E', 'E')
+  BST.insert('S', 'S')
+  BST.insert('T', 'T')
+  BST.insert('I', 'I')
+  BST.insert('O', 'O')
+  BST.insert('N', 'N')
+  
+console.log(height(BST))
+
+
+  // console.log(BST)
+}
+
+//4. It traverses down the tree and returns all of the values it can find. O(n)
+
+main()
+
+
