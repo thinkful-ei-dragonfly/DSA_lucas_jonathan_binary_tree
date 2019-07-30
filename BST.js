@@ -163,7 +163,7 @@ class BinarySearchTree {
       }
     }
   }
-  
+
   _findMin(){
     if (!this.left) {
       return this
@@ -171,7 +171,7 @@ class BinarySearchTree {
     return this.left._findMin()
   }
 }
-
+// Exercise 5
 function height(bst){
   if(!bst){
     return 0
@@ -192,8 +192,57 @@ function height(bst){
   else if(bst.right){
     return 1 + height(bst.right)
   }
-  
-  return 1 
+
+  return 1
+
+}
+
+// Exercise 6
+function isItaBST(bst) {
+  if ( (!bst.hasOwnProperty('left') && !bst.hasOwnProperty('right')) && ((!bst.hasOwnProperty('key') && !bst.hasOwnProperty('value')) && !bst.hasOwnProperty('parent')) ) {
+    // if this argument doesn't have EACH of the necessary properties that define a BinarySearchTree, it's gotta be false
+    console.log('first if statement');
+    return false
+  }
+
+  else {
+    // This runs because it has ALL the necessary properties
+    // AND it's left is not bigger than the value
+    // and the right is not less than the value
+
+    // Now we traverse down the tree and check the sub nodes
+
+    if (bst.left && bst.right) {
+      // if this is a parent of two nodes
+      if(bst.left.value > bst.value || bst.right.value < bst.value) {
+          // this runs if all the properties are there, but the values aren't aligned with the definition of a BinarySearchTree
+          // all nodes in left-branches should be less than the value of their parent
+          // all nodes on the right should be greater than the value of their parent
+          return false
+      }
+      return (isItaBST(bst.left) && isItaBST(bst.right))
+    }
+    else if (bst.left) {
+      if (bst.left.value > bst.value) {
+        // checking again. if this node only has a left child, we need to make sure the logic still applies
+        return false
+      }
+      // becomes falsy when there is no left child
+      // however the property is still there, as checked by the first if statement
+      return isItaBST(bst.left)
+    }
+    else if (bst.right) {
+      if (bst.right.value < bst.value) {
+        // right values can't be smaller than
+        return false
+      }
+      // becomes falsy when there is no right child
+      // however the property is still there, as checked by the first if statement
+      return isItaBST(bst.right)
+    }
+    return true
+  }
+
 
 }
 
@@ -221,8 +270,9 @@ function main() {
   BST.insert('I', 'I')
   BST.insert('O', 'O')
   BST.insert('N', 'N')
-  
+
 console.log(height(BST))
+console.log(isItaBST(BST));
 
 
   // console.log(BST)
@@ -231,5 +281,3 @@ console.log(height(BST))
 //4. It traverses down the tree and returns all of the values it can find. O(n)
 
 main()
-
-
