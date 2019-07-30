@@ -170,6 +170,13 @@ class BinarySearchTree {
     }
     return this.left._findMin()
   }
+  // This helps find the largest number
+  _findMax(){
+    if (!this.right) {
+      return this
+    }
+    return this.right._findMax()
+  }
 }
 // Exercise 5
 function height(bst){
@@ -243,6 +250,30 @@ function isItaBST(bst) {
     return true
   }
 
+
+}
+
+function thirdLargest(bst) {
+
+  // this is just pseudocode
+  // we know that variables aren't really written this way
+  let 2ndBiggest = ''
+  let 3rdBiggest = ''
+  let furthestRight = bst._findMax()
+  if (furthestRight.left != null) {
+    2ndBiggest = furthestRight.left
+    if (2ndBiggest.left) {
+      3rdBiggest = 2ndBiggest.left
+    }
+  } else {
+    2ndBiggest = furthestRight.parent
+    if (2ndBiggest.left != null) {
+      3rdBiggest = 2ndBiggest.left
+    } else {
+      3rdBiggest = 2ndBiggest.parent
+    }
+  }
+  return 3rdBiggest
 
 }
 
