@@ -208,15 +208,11 @@ function height(bst){
 function isItaBST(bst) {
   if ( (!bst.hasOwnProperty('left') && !bst.hasOwnProperty('right')) && ((!bst.hasOwnProperty('key') && !bst.hasOwnProperty('value')) && !bst.hasOwnProperty('parent')) ) {
     // if this argument doesn't have EACH of the necessary properties that define a BinarySearchTree, it's gotta be false
-    console.log('first if statement');
     return false
   }
 
   else {
     // This runs because it has ALL the necessary properties
-    // AND it's left is not bigger than the value
-    // and the right is not less than the value
-
     // Now we traverse down the tree and check the sub nodes
 
     if (bst.left && bst.right) {
@@ -253,27 +249,41 @@ function isItaBST(bst) {
 
 }
 
-function thirdLargest(bst) {
+//Write an algorithm to find the third largest value in a binary search tree
+function nth_largest(tree, state) { 
+	//Finding the largest node means traversing the right first.
+	if (tree.right) {
+		nth_largest(tree.right, state);
+		if (state.result) return;
+	}
+	if (!--state.n) { 
+		//Found it.
+		state.result = tree.key; 
+		return;
+	}
+	if (tree.left) nth_largest(tree.left, state);
+}
 
-  // this is just pseudocode
-  // we know that variables aren't really written this way
-  let 2ndBiggest = ''
-  let 3rdBiggest = ''
-  let furthestRight = bst._findMax()
-  if (furthestRight.left != null) {
-    2ndBiggest = furthestRight.left
-    if (2ndBiggest.left) {
-      3rdBiggest = 2ndBiggest.left
+function third_largest(tree) {
+	//Special case: empty tree.
+	if (tree.key == null) 
+		return null;
+	let state = {n: 3, result: null};
+	nth_largest(tree, state);
+	return state.result;
+}
+
+//Implement a function to check if a tree is balanced (i.e. a tree where no two leaves differ 
+//in distance from the root by more than one).
+function isBalanced (tree) {
+    if (!tree.left) {
+        return !(tree.right && (tree.right.left || tree.right.right));
     }
-  } else {
-    2ndBiggest = furthestRight.parent
-    if (2ndBiggest.left != null) {
-      3rdBiggest = 2ndBiggest.left
-    } else {
-      3rdBiggest = 2ndBiggest.parent
+    if (!tree.right) {
+        return !(tree.left && (tree.left.left || tree.left.right));
     }
-  }
-  return 3rdBiggest
+    return isBalanced(tree.left) && isBalanced(tree.right);
+}
 
 }
 
